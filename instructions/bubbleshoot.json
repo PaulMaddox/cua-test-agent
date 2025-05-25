@@ -1,9 +1,0 @@
-{
-    "name": "Bubble Shooter Game",
-    "description": "Play a free-to-play bubble shooter game and find the available score.",
-    "startUrl": "https://games.gameboss.com/bubbleshooterclassic/index.html?lang=en",
-    "closeOnCompletion": false,
-    "instructions": [
-        "Match three or more bubbles of the same color to pop them, score points, clear all bubbles to win, and keep them from crossing the dotted line. Where you click defines where the bubble is aimed, aim for bubbles the same color as the one you are shooting."
-    ]
-}
