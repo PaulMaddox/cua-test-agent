@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import { readFile } from "fs/promises";
 import { LocalBrowserComputer } from './computers/localbrowser-computer.js';
 import { AzureOpenAICUA } from './models/azure-openai-cua.js';  
@@ -7,6 +8,9 @@ import path from 'path';
 
 async function main() {
     
+    // Load environment variables from .env file
+    dotenv.config();
+
     // Save the results to a path of /outputs/cua-test-<dd-mm-yyyy>-<hh-mm-ss>/
     const date = new Date().toISOString().replace(/[:.]/g, '-');
     LOG.setLogPath(path.join('./outputs', `cua-test-${date}`));
@@ -18,7 +22,12 @@ async function main() {
     const computer = new LocalBrowserComputer(instructions.startUrl, instructions.headless);
     await computer.start();
 
-    const model = new AzureOpenAICUA(computer);
+    const model = new AzureOpenAICUA(computer, {
+            endpoint: process.env.AZURE_OPENAI_ENDPOINT,
+            apiKey: process.env.AZURE_OPENAI_API_KEY,
+            deployment: process.env.AZURE_OPENAI_DEPLOYMENT || "computer-use-preview",
+            apiVersion: process.env.AZURE_OPENAI_API_VERSION || "2025-04-01-preview",
+    });
 
     // Loop through the instructions provided, and execute each of them using the model provided.
     await model.executeInstructions(instructions.instructions);

@@ -4,16 +4,11 @@ import { LOG } from "../logger.js";
 
 export class AzureOpenAICUA extends Model {
 
-    constructor(computer) {
+    constructor(computer, azureConfig) {
         super(computer);
         this.computer = computer || null;
         this.previousResponseId = null;
-        this.azureConfig = {
-            endpoint: process.env.AZURE_OPENAI_ENDPOINT,
-            apiKey: process.env.AZURE_OPENAI_API_KEY,
-            deployment: process.env.AZURE_OPENAI_DEPLOYMENT || "computer-use-preview",
-            apiVersion: process.env.AZURE_OPENAI_API_VERSION || "2025-04-01-preview",
-        };
+        this.azureConfig = azureConfig || {};
         this.costPerInputToken = 3.00 / 1_000_000; // $3.00 per million input tokens
         this.costPerOutputToken = 12.00 / 1_000_000; // $12.00 per million output tokens
         this.inputTokensUsed = 0;

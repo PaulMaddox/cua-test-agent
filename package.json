@@ -1,5 +1,5 @@
 {
-"name": "cua-test-agent",
+  "name": "cua-test-agent",
   "version": "1.0.0",
   "type": "module",
   "main": "index.js",
@@ -14,7 +14,7 @@
   "dependencies": {
     "axios": "^1.9.0",
     "chalk": "^5.4.1",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.5.0",
     "enquirer": "^2.4.1",
     "minimist": "^1.2.8",
     "playwright": "^1.51.0",
