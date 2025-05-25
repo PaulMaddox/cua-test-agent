@@ -23,7 +23,7 @@ async function main() {
     // Loop through the instructions provided, and execute each of them using the model provided.
     await model.executeInstructions(instructions.instructions);
 
-    computer.stop();
+    await computer.stop();
     process.exit(0);
 
 }

@@ -32,7 +32,7 @@ export class AzureOpenAICUA extends Model {
     }
 
     async executeInstructions(instructions) {
-        super.executeInstructions(instructions);
+        await super.executeInstructions(instructions);
 
         // Iterate through the provided instructions, and execute each one using the Azure OpenAI API.
         let previousMessageId;
@@ -83,7 +83,7 @@ export class AzureOpenAICUA extends Model {
                     break;
                 }
                 case "computer_call": {
-                    LOG.info(`[Azure OpenAI CUA] Executing computer call: ${action.action.type} (call_id: ${action.call_id})`);
+                    LOG.debug(`[Azure OpenAI CUA] Executing computer call: ${action.action.type} (call_id: ${action.call_id})`);
                     await this.computer.handleAction(action.action);
 
                     // Take a screenshot after handling the action
@@ -111,7 +111,7 @@ export class AzureOpenAICUA extends Model {
             // Update previousResponseId to the new response ID
             previousResponseId = followupResponse.id;
 
-            LOG.info(`[Azure OpenAI CUA] Responded for computer calls: ${computerCallOutputs.map(o => o.call_id).join(", ")}`);
+            LOG.debug(`[Azure OpenAI CUA] Responded for computer calls: ${computerCallOutputs.map(o => o.call_id).join(", ")}`);
             
             // Recursively handle any further actions (new computer_call actions in followupResponse)
             await this.handleActions(followupResponse, previousResponseId);
@@ -120,7 +120,7 @@ export class AzureOpenAICUA extends Model {
     }
 
     async send(input, previousResponseId = null) {
-        super.send(input);
+        await super.send(input);
 
         const url = `${this.azureConfig.endpoint}/openai/responses?api-version=${this.azureConfig.apiVersion}`;
         const headers = {

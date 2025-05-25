@@ -26,19 +26,19 @@ export class Computer {
     }
 
     async start() {
-        LOG.ok(`[Computer] Starting computer with resolution ${this.displayWidth}x${this.displayHeight} (headless: ${this.headless})...`, chalk.green);
+        LOG.ok(`[Computer] Starting computer with resolution ${this.displayWidth}x${this.displayHeight} (headless: ${this.headless})...`);
     }
 
     async stop() {
-        LOG.error(`[Computer] Stopping computer...`, chalk.red);
+        LOG.error(`[Computer] Stopping computer...`);
     }
 
     async handleAction(action) {
-        LOG.info(`[Computer] Handling action: ${JSON.stringify(action, null, 2)}`, chalk.dim.yellow);
+        LOG.info(`[Computer] Handling action: ${JSON.stringify(action, null, 2)}`);
     }
 
     async screenshot() {
-        LOG.info(`[Computer] Taking screenshot (${this.displayWidth}x${this.displayHeight})...`, chalk.dim.yellow);
+        LOG.info(`[Computer] Taking screenshot (${this.displayWidth}x${this.displayHeight})`);
     }
 
     getOSName() {

@@ -11,7 +11,7 @@ export class LocalBrowserComputer extends Computer {
     }
 
     async start() {
-        super.start();
+        await super.start();
         // Spawn a new Chromium browser instance
         this.browser = await chromium.launch({
             headless: this.headless,
@@ -25,7 +25,8 @@ export class LocalBrowserComputer extends Computer {
 
         // Create a new browser context
         this.context = await this.browser.newContext({
-            recordHar: { path: path.join(this.outputPath, 'playwright.har'), content: "embed" },
+            recordHar: { path: path.join(LOG.logPath, 'playwright.har'), content: "embed" },
+            recordVideo: { dir: LOG.logPath, size: { width: this.displayWidth, height: this.displayHeight } },
             viewport: { width: this.displayWidth, height: this.displayHeight },
             ignoreHTTPSErrors: true,
             bypassCSP: true
@@ -39,14 +40,14 @@ export class LocalBrowserComputer extends Computer {
     }
 
     async stop() {
-        super.stop();
+        await super.stop();
         await this.context.close();
         await this.browser.close();
         LOG.error('[LocalBrowserComputer] Browser closed');
     }
 
     async handleAction(action) {
-        super.handleAction(action);
+        await super.handleAction(action);
 
         const { x, y, button, path, scroll_x, scroll_y, text, keys, url } = action;
 
@@ -141,7 +142,7 @@ export class LocalBrowserComputer extends Computer {
     }
 
     async screenshot() {
-        super.screenshot();
+        await super.screenshot();
         const screenshotBuffer = await this.page.screenshot({ fullPage: true });
         LOG.screenshot(screenshotBuffer);
         return screenshotBuffer.toString('base64');
