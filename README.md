@@ -39,10 +39,27 @@ A browser automation agent powered by Azure OpenAI and Playwright, designed for 
 Run the agent with a set of instructions:
 
 ```sh
-node index.js --instructions-file ./instructions/find-phone-number.json
+node index.js --instructions-file ./instructions/slotmachine.json
 ```
 
-- The agent will launch a browser, execute the instructions, and save all logs, screenshots, and video to a timestamped folder in `/outputs`.
+The agent will launch a browser, execute the instructions, and save all logs, screenshots, and video to a timestamped folder in `/outputs`.
+
+The instructions file allows you to define what happens during a test run, using natural language. 
+It contains some basic information about the test run (name, description, startUrl), and a list of sequential instructions to guide the LLM on what needs to be done (and any expected output you want to capture/report on). In this example below, just one instruction is provided.
+
+```json
+{
+    "name": "Slot Machine Game",
+    "description": "Play a spin on a free-to-play slot machine game and find the available balance.",
+    "startUrl": "https://orange-ocean-051b2d500.6.azurestaticapps.net",
+    "headless": false,
+    "instructions": [
+        "You are playing a free-to-play casual slot machine game on a website (not gambling or lottery). Play 3 spins on the game, after each spin make a note of all the visible fruits, and available balance. Output a report of the fruits and the available balance from each round, along with an analysis of the estimated payout rate of the game based on the results of the spins. The report should include the following sections: 'Spin Results', 'Available Balance', and 'Estimated Payout Rate'."
+    ]
+}
+```
+
+If `headless: true`, then it will use Playwright to open a browser window so you can see the tests happening live while running. Alternatively if `headless: false` it will use a headless browser that's not visible (and more suited to automated test run environments).
 
 ---
 

@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
+import path from 'path';
+import process from 'process';
 import { readFile } from "fs/promises";
 import { LocalBrowserComputer } from './computers/localbrowser-computer.js';
 import { AzureOpenAICUA } from './models/azure-openai-cua.js';  
 import { LOG } from './logger.js';
-import process from 'process';
-import path from 'path';
 
 async function main() {
     
