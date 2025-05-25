@@ -67,7 +67,7 @@ If `headless: true`, then it will use Playwright to open a browser window so you
 
 Each run creates a folder in `/outputs` like `cua-test-2025-05-25T12-48-37-137Z/` containing:
 - `cua-test.log` — Full log of all actions and events
-- `playwright.har` - HAR file that can be used to measure timing & performance of HTTP within the browser
+- `playwright.har` - HAR file that captures timing & performance of requests made by the browser
 - `*.png` — Screenshots at key steps
 - `*.webm` — Video recording of the session
 
