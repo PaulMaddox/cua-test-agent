@@ -11,20 +11,8 @@ async function main() {
     const date = new Date().toISOString().replace(/[:.]/g, '-');
     LOG.setLogPath(path.join('./outputs', `cua-test-${date}`));
 
-    // Parse CLI arguments for --instructions-file
-    const args = process.argv.slice(2);
-    let instructionsFile;
-    for (let i = 0; i < args.length; i++) {
-        if (args[i] === '--instructions-file' && args[i + 1]) {
-            instructionsFile = args[i + 1];
-            i++; // skip next arg since it's the filename
-            continue;
-        }
-    }
-    if (!instructionsFile) {
-        instructionsFile = './instructions/slotmachine.json';
-    }
-
+    // Parse CLI arguments
+    const { instructionsFile } = getCliArgs();
     const instructions = await loadInstructions(instructionsFile);
 
     const computer = new LocalBrowserComputer(instructions.startUrl, instructions.headless);
@@ -59,5 +47,23 @@ async function loadInstructions(instructionsFile) {
         instructions: parsed.instructions.map(line => line.trim()).filter(line => line.length > 0),
     };
 }
+
+
+function getCliArgs() {
+    const args = process.argv.slice(2);
+    let instructionsFile;
+    for (let i = 0; i < args.length; i++) {
+        if (args[i] === '--instructions-file' && args[i + 1]) {
+            instructionsFile = args[i + 1];
+            i++; // skip next arg since it's the filename
+            continue;
+        }
+    }
+    if (!instructionsFile) {
+        instructionsFile = './instructions/slotmachine.json';
+    }
+    return { instructionsFile };
+}
+
 
 main();
