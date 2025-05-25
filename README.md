@@ -34,6 +34,36 @@ A browser automation agent powered by Azure OpenAI and Playwright, designed for 
 
 ---
 
+## 🐳 Using Docker
+
+You can also run this agent inside a Docker container:
+
+1. **Build the Docker image:**
+   ```sh
+   docker build -t cua-test-agent .
+   ```
+
+2. **Run the container with your environment variables:**
+   ```sh
+   docker run -it --rm \
+     -e AZURE_OPENAI_ENDPOINT=your_endpoint \
+     -e AZURE_OPENAI_API_KEY=your_api_key \
+     -v "$(pwd)/outputs:/app/outputs" \
+     cua-test-agent
+   ```
+
+3. **Use custom instructions file:**
+   ```sh
+   docker run -it --rm \
+     -e AZURE_OPENAI_ENDPOINT=your_endpoint \
+     -e AZURE_OPENAI_API_KEY=your_api_key \
+     -v "$(pwd)/outputs:/app/outputs" \
+     -v "$(pwd)/my-instructions.json:/app/my-instructions.json" \
+     cua-test-agent node index.js --instructions-file ./my-instructions.json
+   ```
+
+---
+
 ## ▶️ Running the Agent
 
 Run the agent with a set of instructions:
