@@ -1,0 +1,69 @@
+import { mkdir, appendFile } from "fs/promises";
+import path from "path";
+import chalk from "chalk";
+
+const LEVELS = { debug: 0, info: 1, warn: 2, error: 3 };
+
+class Log {
+    constructor(logLevel = 'info') {
+        this.logLevel = LEVELS[logLevel] !== undefined ? logLevel : 'info';
+        this.logFilePath = null;
+    }
+
+    setLogFile(filePath) {
+        this.logFilePath = filePath;
+    }
+
+    async _appendToFile(line) {
+        if (!this.logFilePath) return;
+        await mkdir(path.dirname(this.logFilePath), { recursive: true });
+        await appendFile(this.logFilePath, line + '\n', 'utf-8');
+    }
+
+    async debug(message) {
+        if (LEVELS[this.logLevel] <= LEVELS.debug) {
+            console.log(chalk.gray(message));
+        }
+        const time = new Date().toISOString();
+        let timestamped = (`[${time}] [DEBUG] ${message}`);
+        await this._appendToFile(timestamped);
+    }
+
+    async info(message) {
+        if (LEVELS[this.logLevel] <= LEVELS.info) {
+            console.log(chalk.blue(message));
+        }
+        const time = new Date().toISOString();
+        let timestamped = (`[${time}] [INFO] ${message}`);
+        await this._appendToFile(timestamped);
+    }
+
+    async ok(message) {
+        console.log(chalk.green(message));
+        const time = new Date().toISOString();
+        let timestamped = (`[${time}] [SUCCESS] ${message}`);
+        await this._appendToFile(timestamped);
+    }
+
+    async warn(message) {
+        if (LEVELS[this.logLevel] <= LEVELS.warn) {
+            console.log(chalk.yellow(message));
+        }
+        const time = new Date().toISOString();
+        let timestamped = (`[${time}] [WARN] ${message}`);
+        await this._appendToFile(timestamped);
+    }
+
+    async error(message) {
+        if (LEVELS[this.logLevel] <= LEVELS.error) {
+            console.log(chalk.red(message));
+        }
+        const time = new Date().toISOString();
+        let timestamped = (`[${time}] [ERROR] ${message}`);
+        await this._appendToFile(timestamped);
+    }
+
+}
+
+export const LOG = new Log('info');
+export default LOG;
