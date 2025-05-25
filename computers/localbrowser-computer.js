@@ -10,6 +10,94 @@ export class LocalBrowserComputer extends Computer {
         super(startUrl, headless);
     }
 
+    /**
+     * Apply stealth mode to make browser automation less detectable
+     * @param {import('playwright').Page} page - Playwright page object
+     */
+    async applyStealthMode(page) {
+        LOG.info('[LocalBrowserComputer] Applying stealth mode to browser');
+        
+        await page.addInitScript(() => {
+            // Overwrite the navigator properties to appear as a regular browser
+            Object.defineProperty(navigator, 'webdriver', {
+                get: () => false,
+            });
+            
+            // Hide automation-related properties
+            Object.defineProperty(navigator, 'plugins', {
+                get: () => {
+                    return {
+                        length: 5,
+                        item: () => null,
+                        refresh: () => {},
+                        namedItem: () => null,
+                    };
+                },
+            });
+            
+            // Add language settings typical of real browsers
+            Object.defineProperty(navigator, 'languages', {
+                get: () => ['en-US', 'en'],
+            });
+            
+            // Modify the userAgent to remove automation indicators
+            const userAgent = navigator.userAgent;
+            if (userAgent.includes('HeadlessChrome')) {
+                Object.defineProperty(navigator, 'userAgent', {
+                    get: () => userAgent.replace('HeadlessChrome', 'Chrome'),
+                });
+            }
+            
+            // Override permissions
+            if (navigator.permissions) {
+                const originalQuery = navigator.permissions.query;
+                navigator.permissions.query = async (parameters) => {
+                    if (parameters.name === 'notifications') {
+                        return Promise.resolve({ state: "prompt", onchange: null });
+                    }
+                    return originalQuery.call(navigator.permissions, parameters);
+                };
+            }
+            
+            // Modify Chrome object
+            if (window.chrome) {
+                window.chrome = {
+                    runtime: {},
+                    loadTimes: () => ({}),
+                    csi: () => ({}),
+                    app: {},
+                };
+            }
+            
+            // Add getters for outerHeight and outerWidth
+            Object.defineProperties(window, {
+                'outerHeight': { get: () => window.innerHeight },
+                'outerWidth': { get: () => window.innerWidth },
+            });
+            
+            // Add dummy notification API
+            window.Notification = (window.Notification || {
+                permission: 'default',
+                requestPermission: async () => 'default',
+            });
+            
+            // Add WebGL fuzzing
+            const getParameter = WebGLRenderingContext.prototype.getParameter;
+            WebGLRenderingContext.prototype.getParameter = function(parameter) {
+                // Randomize UNMASKED_VENDOR_WEBGL and UNMASKED_RENDERER_WEBGL
+                if (parameter === 37445) {
+                    return 'Intel Inc.';
+                }
+                if (parameter === 37446) {
+                    return 'Intel Iris OpenGL Engine';
+                }
+                return getParameter.call(this, parameter);
+            };
+        });
+        
+        LOG.ok('[LocalBrowserComputer] Stealth mode applied');
+    }
+
     async start() {
         await super.start();
         // Spawn a new Chromium browser instance
@@ -33,6 +121,8 @@ export class LocalBrowserComputer extends Computer {
         });
 
         this.page = await this.context.newPage();
+        // Apply stealth mode to make browser automation less detectable
+        await this.applyStealthMode(this.page);
         this.page.goto(this.startUrl || 'http://google.com');
         this.page.waitForLoadState('load');
 
