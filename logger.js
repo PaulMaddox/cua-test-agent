@@ -1,23 +1,26 @@
 import { mkdir, appendFile } from "fs/promises";
-import path from "path";
 import chalk from "chalk";
+import fs from "fs";
+import path from 'path';
 
 const LEVELS = { debug: 0, info: 1, warn: 2, error: 3 };
 
 class Log {
     constructor(logLevel = 'info') {
         this.logLevel = LEVELS[logLevel] !== undefined ? logLevel : 'info';
-        this.logFilePath = null;
+        this.logPath = null;
+        this.logFile = null;
     }
 
-    setLogFile(filePath) {
-        this.logFilePath = filePath;
+    setLogPath(logPath) {
+        this.logPath = logPath;
+        this.logFile = path.join(logPath, 'cua-test.log');
     }
 
     async _appendToFile(line) {
-        if (!this.logFilePath) return;
-        await mkdir(path.dirname(this.logFilePath), { recursive: true });
-        await appendFile(this.logFilePath, line + '\n', 'utf-8');
+        if (!this.logFile) return;
+        await mkdir(path.dirname(this.logFile), { recursive: true });
+        await appendFile(this.logFile, line + '\n', 'utf-8');
     }
 
     async debug(message) {
@@ -61,6 +64,11 @@ class Log {
         const time = new Date().toISOString();
         let timestamped = (`[${time}] [ERROR] ${message}`);
         await this._appendToFile(timestamped);
+    }
+
+    async screenshot(screenshotBuffer) {
+        const screenshotPath = path.join(this.logPath, `screenshot-${Date.now()}.png`);
+        fs.writeFileSync(screenshotPath, screenshotBuffer);
     }
 
 }

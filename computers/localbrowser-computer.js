@@ -5,10 +5,9 @@ import { LOG } from '../logger.js';
 
 export class LocalBrowserComputer extends Computer {
 
-    constructor(startUrl, headless = false, resultsPath) {
+    constructor(startUrl, headless = false) {
         // Initialize Playwright browser and context
         super(startUrl, headless);
-        this.resultsPath = resultsPath;
     }
 
     async start() {
@@ -144,12 +143,7 @@ export class LocalBrowserComputer extends Computer {
     async screenshot() {
         super.screenshot();
         const screenshotBuffer = await this.page.screenshot({ fullPage: true });
-        // Save the screenshot to the results path if specified
-        if (this.resultsPath) {
-            const screenshotPath = path.join(this.resultsPath, `screenshot-${Date.now()}.png`);
-            await this.page.screenshot({ path: screenshotPath, fullPage: true });
-            LOG.info(`[LocalBrowserComputer] Screenshot saved to ${screenshotPath}`);
-        }
+        LOG.screenshot(screenshotBuffer);
         return screenshotBuffer.toString('base64');
     }
 

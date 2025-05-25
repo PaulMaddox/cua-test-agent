@@ -7,18 +7,17 @@ import path from 'path';
 
 async function main() {
     
+    // Save the results to a path of /outputs/cua-test-<dd-mm-yyyy>-<hh-mm-ss>/
+    const date = new Date().toISOString().replace(/[:.]/g, '-');
+    LOG.setLogPath(path.join('./outputs', `cua-test-${date}`));
+
     // Parse CLI arguments for --instructions-file
     const args = process.argv.slice(2);
     let instructionsFile;
-    let saveResults = false;
     for (let i = 0; i < args.length; i++) {
         if (args[i] === '--instructions-file' && args[i + 1]) {
             instructionsFile = args[i + 1];
             i++; // skip next arg since it's the filename
-            continue;
-        }
-        if (args[i] === '--save') {
-            saveResults = true;
             continue;
         }
     }
@@ -26,20 +25,12 @@ async function main() {
         instructionsFile = './instructions/slotmachine.json';
     }
 
-    // Save the results to a path of /outputs/cua-test-<dd-mm-yyyy>-<hh-mm-ss>/
-    let resultsPath = null;
-    if(saveResults) {
-        const date = new Date().toISOString().replace(/[:.]/g, '-');
-        resultsPath = path.join('./outputs', `cua-test-${date}`);  
-        LOG.setLogFile(path.join(resultsPath, 'cua-test.log'));
-    }
-
     const instructions = await loadInstructions(instructionsFile);
 
-    const computer = new LocalBrowserComputer(instructions.startUrl, instructions.headless, resultsPath);
+    const computer = new LocalBrowserComputer(instructions.startUrl, instructions.headless);
     await computer.start();
 
-    const model = new AzureOpenAICUA(computer, resultsPath);
+    const model = new AzureOpenAICUA(computer);
 
     // Loop through the instructions provided, and execute each of them using the model provided.
     await model.executeInstructions(instructions.instructions);
