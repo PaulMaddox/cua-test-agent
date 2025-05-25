@@ -17,6 +17,9 @@ export class LocalBrowserComputer extends Computer {
             headless: this.headless,
             env: { DISPLAY: ':0' },
             args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
                 '--disable-extensions',
                 '--disable-file-system',
                 `--window-size=${this.displayWidth},${this.displayHeight}`
