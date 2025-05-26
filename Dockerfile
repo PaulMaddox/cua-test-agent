@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy package files first for better layer caching
 COPY package*.json ./
 
-# Install Node.js dependencies
-RUN npm ci
+# Install Node.js dependencies with certificate verification disabled
+RUN npm config set strict-ssl false && npm install
 
 # Note: Playwright browsers are already installed in the base image
 
