@@ -16,10 +16,10 @@ async function main() {
     LOG.setLogPath(path.join('./outputs', `cua-test-${date}`));
 
     // Parse CLI arguments
-    const { instructionsFile } = getCliArgs();
+    const { instructionsFile, headless } = getCliArgs();
     const instructions = await loadInstructions(instructionsFile);
 
-    const computer = new LocalBrowserComputer(instructions.startUrl, instructions.headless);
+    const computer = new LocalBrowserComputer(instructions.startUrl, headless);
     await computer.start();
 
     const model = new AzureOpenAICUA(computer, {
@@ -52,7 +52,6 @@ async function loadInstructions(instructionsFile) {
         name: parsed.name || null,
         description: parsed.description || null,
         startUrl: parsed.startUrl || null,
-        headless: typeof parsed.headless === "boolean" ? parsed.headless : false,
         instructions: parsed.instructions.map(line => line.trim()).filter(line => line.length > 0),
     };
 }
@@ -61,17 +60,22 @@ async function loadInstructions(instructionsFile) {
 function getCliArgs() {
     const args = process.argv.slice(2);
     let instructionsFile;
+    let headless = false;
     for (let i = 0; i < args.length; i++) {
         if (args[i] === '--instructions-file' && args[i + 1]) {
             instructionsFile = args[i + 1];
             i++; // skip next arg since it's the filename
             continue;
         }
+        if (args[i] === '--headless') {
+            headless = true;
+            continue;
+        }
     }
     if (!instructionsFile) {
         instructionsFile = './instructions/slotmachine.json';
     }
-    return { instructionsFile };
+    return { instructionsFile, headless };
 }
 
 
