@@ -73,6 +73,7 @@ By default, the browser will be visible so you can see the tests happening live 
 
 Each run creates a folder in `/outputs` like `cua-test-2025-05-25T12-48-37-137Z/` containing:
 - `cua-test.log` — Full log of all actions and events
+- `playwright-trace.zip` - A Playwright trace that can be loaded into https://trace.playwright.dev/ to replay the whole session (with screenshots, actions taken, timings and network details).
 - `playwright.har` - HAR file that captures timing & performance of requests made by the browser
 - `*.png` — Screenshots at key steps
 - `*.webm` — Video recording of the session

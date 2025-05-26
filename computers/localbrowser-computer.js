@@ -24,6 +24,7 @@ export class LocalBrowserComputer extends Computer {
         // Spawn a new Chromium browser instance
         this.browser = await chromium.launch({
             headless: this.headless,
+            
             env: { DISPLAY: ':0' },
             args: [
                 '--no-sandbox',
@@ -44,6 +45,12 @@ export class LocalBrowserComputer extends Computer {
             bypassCSP: true
         });
 
+        // Enable tracing for the context
+        await this.context.tracing.start({
+            screenshots: true,
+            snapshots: true,
+        })
+
         this.page = await this.context.newPage();
         // Apply stealth mode to make browser automation less detectable
         await this.applyStealthMode(this.page);
@@ -61,6 +68,7 @@ export class LocalBrowserComputer extends Computer {
 
     async stop() {
         await super.stop();
+        await this.context.tracing.stop({ path: path.join(LOG.logPath, 'playwright-trace.zip') });
         await this.context.close();
         await this.browser.close();
         LOG.error('[LocalBrowserComputer] Browser closed');
@@ -163,7 +171,11 @@ export class LocalBrowserComputer extends Computer {
 
     async screenshot() {
         await super.screenshot();
-        const screenshotBuffer = await this.page.screenshot({ fullPage: true });
+        const screenshotBuffer = await this.page.screenshot({ 
+            fullPage: false,
+            type: 'jpeg',
+            quality: 80, 
+        });
         LOG.screenshot(screenshotBuffer);
         return screenshotBuffer.toString('base64');
     }

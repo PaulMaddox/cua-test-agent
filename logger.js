@@ -67,7 +67,7 @@ class Log {
     }
 
     async screenshot(screenshotBuffer) {
-        const screenshotPath = path.join(this.logPath, `screenshot-${Date.now()}.png`);
+        const screenshotPath = path.join(this.logPath, `screenshot-${Date.now()}.jpg`);
         fs.writeFileSync(screenshotPath, screenshotBuffer);
     }
 

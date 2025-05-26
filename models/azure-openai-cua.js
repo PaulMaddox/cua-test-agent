@@ -1,5 +1,6 @@
 import { Model } from "./model.js";
 import axios from "axios";
+import axiosRetry from "axios-retry";
 import { LOG } from "../logger.js";
 
 export class AzureOpenAICUA extends Model {
@@ -19,6 +20,14 @@ export class AzureOpenAICUA extends Model {
             Perform each action immediately without confirmation, stop when the task is complete, and avoid redundant or ineffective actions.
             Available browser actions: click, double_click, move, drag, scroll, type, keypress, wait, goto, back, forward, screenshot.
         `;
+        
+        // Apply a retry strategy to handle transient errors
+        // This will retry up to 3 times with exponential backoff for network errors or 5xx responses
+        axiosRetry(axios, {
+            retries: 3,
+            retryDelay: axiosRetry.exponentialDelay,
+            shouldResetTimeout: true
+        });
 
         LOG.info("[Azure OpenAI CUA] Initialized with configuration:");
         LOG.info(`Endpoint: ${this.azureConfig.endpoint}`);
@@ -92,6 +101,7 @@ export class AzureOpenAICUA extends Model {
                         output: {
                             type: "computer_screenshot",
                             image_url: `data:image/png;base64,${screenshot}`,
+                            // detail: "low", // This helps reduce the token cost of image processing, but you can change it to "high" if needed
                         }
                     });
                     break;
