@@ -2,12 +2,21 @@ import { chromium } from 'playwright';
 import { Computer } from './computer.js';
 import path from 'path';
 import { LOG } from '../logger.js';
+import { applyStealthMode } from './stealth-plugin.js';
 
 export class LocalBrowserComputer extends Computer {
 
     constructor(startUrl, headless = false) {
         // Initialize Playwright browser and context
         super(startUrl, headless);
+    }
+
+    /**
+     * Apply stealth mode to make browser automation less detectable
+     * @param {import('playwright').Page} page - Playwright page object
+     */
+    async applyStealthMode(page) {
+        await applyStealthMode(page);
     }
 
     async start() {
@@ -36,6 +45,8 @@ export class LocalBrowserComputer extends Computer {
         });
 
         this.page = await this.context.newPage();
+        // Apply stealth mode to make browser automation less detectable
+        await this.applyStealthMode(this.page);
         this.page.goto(this.startUrl || 'http://google.com');
         this.page.waitForLoadState('load');
 

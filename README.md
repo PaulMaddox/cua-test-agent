@@ -10,6 +10,7 @@ A browser automation agent powered by Azure OpenAI and Playwright, designed for 
 - **Session Video Recording**: Playwright records the browser session as a video, with the ability to overlay action annotations.
 - **Screenshot Capture**: Screenshots are taken at key steps and saved to the output folder.
 - **Flexible CLI**: Easily specify instruction files and output locations.
+- **Stealth Browsing**: Uses stealth mode techniques based on puppeteer-extra-plugin-stealth to make browser automation less detectable by websites.
 
 ---
 
