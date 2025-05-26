@@ -6,9 +6,10 @@ A browser automation agent powered by Azure OpenAI and Playwright, designed for 
 
 ## 🚀 Features
 - **Natural Language Browser Automation**: Use Azure OpenAI to interpret and execute browser instructions.
-- **Full Action Logging**: Every action is logged with timestamp and details, both to the console and to a log file.
+- **Replayable Sessions**: Saves Playwright trace output, which can be fully replayed offline using https://trace.playwright.dev/
 - **Session Video Recording**: Playwright records the browser session as a video, with the ability to overlay action annotations.
 - **Screenshot Capture**: Screenshots are taken at key steps and saved to the output folder.
+- **Headless Mode**: Can spawn a local browser, or operate in headless mode (e.g. Docker container).
 - **Flexible CLI**: Easily specify instruction files and output locations.
 - **Stealth Browsing**: Uses stealth mode techniques based on puppeteer-extra-plugin-stealth to make browser automation less detectable by websites.
 
