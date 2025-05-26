@@ -47,10 +47,16 @@ export class LocalBrowserComputer extends Computer {
         this.page = await this.context.newPage();
         // Apply stealth mode to make browser automation less detectable
         await this.applyStealthMode(this.page);
-        this.page.goto(this.startUrl || 'http://google.com');
-        this.page.waitForLoadState('load');
+        
+        // Wait for 1000ms before starting to ensure everything is ready
+        // This helps prevent issues when running in containers where the network might not be fully initialized
+        await this.page.waitForTimeout(1000);
 
-        LOG.ok('[LocalBrowserComputer] Browser started successfully');
+        LOG.info('[LocalBrowserComputer] Browser started successfully');
+        LOG.info(`[LocalBrowserComputer] Navigating to start URL: ${this.startUrl} and waiting for load state`);
+        await this.page.goto(this.startUrl || 'http://google.com');
+        await this.page.waitForLoadState('load');
+
     }
 
     async stop() {

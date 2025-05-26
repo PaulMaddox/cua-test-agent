@@ -81,5 +81,5 @@ export async function applyStealthMode(page) {
     await route.continue({ headers });
   });
   
-  LOG.ok('[StealthPlugin] Stealth mode applied successfully');
+  LOG.info('[StealthPlugin] Stealth mode applied successfully');
 }
