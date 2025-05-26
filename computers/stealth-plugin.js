@@ -1,5 +1,5 @@
 /**
- * Stealth adapter for Playwright based on puppeteer-extra-plugin-stealth
+ * Stealth adapter for Playwright implementing browser fingerprint evasion
  */
 
 import { LOG } from '../logger.js';
