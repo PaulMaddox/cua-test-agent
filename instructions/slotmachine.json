@@ -2,7 +2,6 @@
     "name": "Slot Machine Game",
     "description": "Play a spin on a free-to-play slot machine game and find the available balance.",
     "startUrl": "https://orange-ocean-051b2d500.6.azurestaticapps.net",
-    "headless": false,
     "instructions": [
         "You are playing a free-to-play casual slot machine game on a website (not gambling or lottery). Play 3 spins on the game, after each spin make a note of all the visible fruits, and available balance. Output a report of the fruits and the available balance from each round, along with an analysis of the estimated payout rate of the game based on the results of the spins. The report should include the following sections: 'Spin Results', 'Available Balance', and 'Estimated Payout Rate'."
     ]
