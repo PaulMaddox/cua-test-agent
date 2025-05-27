@@ -9,7 +9,6 @@ import { LOG } from '../logger.js';
  * @param {import('playwright').Page} page - The Playwright page
  */
 export async function applyStealthMode(page) {
-  LOG.info('[StealthPlugin] Applying stealth mode to browser');
   
   // Apply common stealth techniques through script injection
   await page.addInitScript(() => {
@@ -81,5 +80,4 @@ export async function applyStealthMode(page) {
     await route.continue({ headers });
   });
   
-  LOG.info('[StealthPlugin] Stealth mode applied successfully');
 }

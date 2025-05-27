@@ -1,0 +1,29 @@
+name: Slot Machine Game
+description: Play a spin on a free-to-play slot machine game and find the available balance.
+startUrl: https://orange-ocean-051b2d500.6.azurestaticapps.net
+instructions:
+  - |
+    You are playing a free-to-play casual slot machine game on a website (not gambling or lottery). 
+    Press the Info button to understand the rules of the game, including the payout rate and how to play.
+    Play 3 spins on the game using the maximum bet button.
+    After each spin make a note of all the visible reel items, and available balance. 
+    After each spin the game will take a few seconds to show the results for each win line.
+    After all spins, use the information you got from the info page to validate the starting balance
+    and ending balance matches what is expected based on the items shown.
+    Output a report at the end with the following format:
+    ```
+    Spin [number]:
+    - Row 1: [item1, item2, item3, item4, item5]
+    - Row 2: [item1, item2, item3, item4, item5]
+    - Row 3: [item1, item2, item3, item4, item5]
+    - Starting Balance: $X.XX
+    - Bet Amount: $Y.YY
+    - Ending Balance: $Y.YY
+    - Payout Validated: [yes/no]
+
+    Total Bet: $Z.ZZ
+    Total Won/Lost: $A.AA
+    Estimated Payout Rate: Z.ZZ%
+    Estimated Payout Summary: [your thoughts on the payout rate]
+    Payout Validated: [yes/no] [details]
+    ```

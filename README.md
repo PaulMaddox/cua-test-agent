@@ -40,13 +40,13 @@ A browser automation agent powered by Azure OpenAI and Playwright, designed for 
 Run the agent with a set of instructions:
 
 ```sh
-node index.js --instructions-file ./instructions/slotmachine.json
+node index.js --instructions-file ./instructions/slotmachine.yaml
 ```
 
 You can also run in headless mode by providing the `--headless` flag:
 
 ```sh
-node index.js --instructions-file ./instructions/slotmachine.json --headless
+node index.js --instructions-file ./instructions/slotmachine.yaml --headless
 ```
 
 The agent will launch a browser, execute the instructions, and save all logs, screenshots, and video to a timestamped folder in `/outputs`.
@@ -54,15 +54,12 @@ The agent will launch a browser, execute the instructions, and save all logs, sc
 The instructions file allows you to define what happens during a test run, using natural language. 
 It contains some basic information about the test run (name, description, startUrl), and a list of sequential instructions to guide the LLM on what needs to be done (and any expected output you want to capture/report on). In this example below, just one instruction is provided.
 
-```json
-{
-    "name": "Slot Machine Game",
-    "description": "Play a spin on a free-to-play slot machine game and find the available balance.",
-    "startUrl": "https://orange-ocean-051b2d500.6.azurestaticapps.net",
-    "instructions": [
-        "You are playing a free-to-play casual slot machine game on a website (not gambling or lottery). Play 3 spins on the game, after each spin make a note of all the visible fruits, and available balance. Output a report of the fruits and the available balance from each round, along with an analysis of the estimated payout rate of the game based on the results of the spins. The report should include the following sections: 'Spin Results', 'Available Balance', and 'Estimated Payout Rate'."
-    ]
-}
+```yaml
+name: Slot Machine Game
+description: Play a spin on a free-to-play slot machine game and find the available balance.
+startUrl: https://orange-ocean-051b2d500.6.azurestaticapps.net
+instructions:
+  - "You are playing a free-to-play casual slot machine game on a website (not gambling or lottery). Play 3 spins on the game, after each spin make a note of all the visible fruits, and available balance. Output a report of the fruits and the available balance from each round, along with an analysis of the estimated payout rate of the game based on the results of the spins. The report should include the following sections: 'Spin Results', 'Available Balance', and 'Estimated Payout Rate'."
 ```
 
 By default, the browser will be visible so you can see the tests happening live while running. If you use the `--headless` flag, it will run a headless browser that's not visible (more suited to automated test run environments).
@@ -103,13 +100,12 @@ You can also run this agent inside a Docker container:
    ```
 
 3. **Use custom instructions file with headless mode:**
-   ```sh
-   docker run -it --rm \
+   ```sh   docker run -it --rm \
      -e AZURE_OPENAI_ENDPOINT=your_endpoint \
      -e AZURE_OPENAI_API_KEY=your_api_key \
      -v "$(pwd)/outputs:/app/outputs" \
-     -v "$(pwd)/my-instructions.json:/app/my-instructions.json" \
-     cua-test-agent node index.js --instructions-file ./my-instructions.json --headless
+     -v "$(pwd)/my-instructions.yaml:/app/my-instructions.yaml" \
+     cua-test-agent node index.js --instructions-file ./my-instructions.yaml --headless
    ```
 
 ---
@@ -157,7 +153,7 @@ sequenceDiagram
 ## 📝 Customizing Instructions
 
 - Edit or create new instruction files in `/instructions/`.
-- Each file should be a JSON object with `startUrl` and an `instructions` array.
+- Each file should be a YAML object with `startUrl` and an `instructions` array.
 
 ---
 

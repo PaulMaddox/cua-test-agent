@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import process from 'process';
 import { readFile } from "fs/promises";
+import yaml from 'js-yaml';
 import { LocalBrowserComputer } from './computers/localbrowser-computer.js';
 import { AzureOpenAICUA } from './models/azure-openai-cua.js';  
 import { LOG } from './logger.js';
@@ -41,11 +42,11 @@ async function loadInstructions(instructionsFile) {
     const fileContent = await readFile(instructionsFile, "utf-8");
     let parsed;
     try {
-        parsed = JSON.parse(fileContent);
+        parsed = yaml.load(fileContent);
     } catch (e) {
-        throw new Error("Instructions file must be valid JSON with 'startUrl' and 'instructions' fields.");
+        throw new Error(`Instructions file must be valid YAML with 'startUrl' and 'instructions' fields. Error: ${e.message}`);
     }
-    if (!Array.isArray(parsed.instructions)) {
+    if (!parsed || !Array.isArray(parsed.instructions)) {
         throw new Error("Instructions file must contain an 'instructions' array.");
     }
     return {
@@ -71,9 +72,8 @@ function getCliArgs() {
             headless = true;
             continue;
         }
-    }
-    if (!instructionsFile) {
-        instructionsFile = './instructions/slotmachine.json';
+    }    if (!instructionsFile) {
+        instructionsFile = './instructions/slotmachine.yaml';
     }
     return { instructionsFile, headless };
 }
