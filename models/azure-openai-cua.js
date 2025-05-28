@@ -39,7 +39,7 @@ export class AzureOpenAICUA extends Model {
         await super.executeInstructions(instructions);
 
         // Iterate through the provided instructions, and execute each one using the Azure OpenAI API.
-        let previousMessageId;
+        //let previousMessageId;
         for (const instruction of instructions) {
 
             LOG.info(`[Azure OpenAI CUA] System Prompt: ${this.systemPrompt}`);
@@ -48,11 +48,11 @@ export class AzureOpenAICUA extends Model {
             const response = await this.send([
                 { role: "system", content: this.systemPrompt },
                 { role: "user", content: instruction },
-            ], previousMessageId);
+            ]);
 
-            previousMessageId = response.id;
+           // previousMessageId = response.id;
 
-            await this.handleActions(response, previousMessageId);
+            await this.handleActions(response, response.id);
 
         }
 
