@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import process from 'process';
-import { readFile } from "fs/promises";
 import yaml from 'js-yaml';
+import { readFile } from "fs/promises";
 import { LocalBrowserComputer } from './computers/localbrowser-computer.js';
 import { AzureOpenAICUA } from './models/azure-openai-cua.js';  
 import { LOG } from './logger.js';

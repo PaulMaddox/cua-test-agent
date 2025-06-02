@@ -4,28 +4,26 @@ startUrl: https://orange-ocean-051b2d500.6.azurestaticapps.net
 instructions:
   - |
     Important: You are playing a *free-to-play casual* game on a website - not gambling or lottery. 
-    Check the info page to understand the payout rates for the symbols.
+    Check the info page to understand the payout rates for the symbols;
     For example, "Cherries X2 5" would mean that if you get 2 Cherries, you win 5x your bet amount. 
+    Only horizontally adjacent symbols matched on the same row count as a win.
     Play 3 spins on the game.
-    After each spin make a note of all the visible reel symbols, any wins and balance.
-    After all spins, use the information you got from the info page to validate the starting balance
-    and ending balance matches what is expected based on the items shown and the amounts on the info page.
-    Output a report at the end with this exact format, calculating all the values based on the spins you played:
+    Always output a report at the end with this EXACT format, calculating all the values based on the spins you played:
     ```
+
     Spin [number]:
-      Row 1: [item1, item2, item3, item4, item5]
-      Row 2: [item1, item2, item3, item4, item5]
-      Row 3: [item1, item2, item3, item4, item5]
+      Row 1 symbols: [item1, item2, item3, item4, item5]
+      Row 2 symbols: [item1, item2, item3, item4, item5]
+      Row 3 symbols: [item1, item2, item3, item4, item5]
       Starting Balance: $X.XX
       Bet Cost: $Y.YY
       Win Amount: $Z.ZZ
       Ending Balance: $Y.YY
-      Win Explanation: [calculation of the $ win amount - be specific about the symbols and multipliers]
-      Payout Validated: [yes/no]
+      Payout Validated: [Yes/No - if the win matches the expected payout based on calculating the symbols and multipliers you learned]
 
     Summary
       Total Bet: $Z.ZZ
       Total Won/Lost: $A.AA
       Estimated Payout Rate: Z.ZZ%
-      All Payouts Validated: [yes/no]
+      All Payouts Validated: [Yes/No]
     ```

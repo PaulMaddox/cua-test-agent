@@ -3,6 +3,14 @@ import axios from "axios";
 import axiosRetry from "axios-retry";
 import { LOG } from "../logger.js";
 
+// Apply a retry strategy to handle transient errors
+// This will retry up to 3 times with exponential backoff for network errors or 5xx responses
+axiosRetry(axios, {
+    retries: 3,
+    retryDelay: axiosRetry.exponentialDelay,
+    shouldResetTimeout: true
+});
+
 export class AzureOpenAICUA extends Model {
 
     constructor(computer, azureConfig) {
@@ -19,16 +27,9 @@ export class AzureOpenAICUA extends Model {
             In the current tab, execute the user's requested actions.
             Perform each action immediately without confirmation, stop when the task is complete, and avoid redundant or ineffective actions.
             Available browser actions: click, double_click, move, drag, scroll, type, keypress, wait, goto, back, forward, screenshot.
+            Focus on 100% accuracy on your reasoning, especially when performing calculations and analysis based on information in screenshots.
         `;
         
-        // Apply a retry strategy to handle transient errors
-        // This will retry up to 3 times with exponential backoff for network errors or 5xx responses
-        axiosRetry(axios, {
-            retries: 3,
-            retryDelay: axiosRetry.exponentialDelay,
-            shouldResetTimeout: true
-        });
-
         LOG.info("[Azure OpenAI CUA] Initialized with configuration:");
         LOG.info(`Endpoint: ${this.azureConfig.endpoint}`);
         LOG.info(`Deployment: ${this.azureConfig.deployment}`);
@@ -144,7 +145,10 @@ export class AzureOpenAICUA extends Model {
             }],
             input,
             store: true,
-            reasoning: { generate_summary: "concise" },
+            reasoning: { 
+                effort: "medium",
+                generate_summary: "concise" 
+            },
             truncation: "auto",
         }
 
