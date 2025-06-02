@@ -101,7 +101,7 @@ Each run creates a folder in `/outputs` like `cua-test-2025-05-25T12-48-37-137Z/
 - `*.webm` — Video recording of the session
 
 Here's an example screenshot and output log file from the sample slot machine instruction above:
-![image](images/sample-screenshot.png)
+![image](images/sample-screenshot-output.png)
 ![image](images/sample-console-output.png)
 
 ---
@@ -146,7 +146,7 @@ The agent uses the Azure OpenAI CUA (Computer Use Agent) model to interpret and 
 5. **Action Output**: For actions requiring feedback (e.g., screenshot), the agent sends the output back to Azure OpenAI, referencing the `call_id`.
 6. **Loop**: The process repeats until all instructions are completed.
 
-### 🧠 Request/Response Flow (Mermaid.js)
+### 🧠 Request/Response Flow
 
 ```mermaid
 sequenceDiagram
