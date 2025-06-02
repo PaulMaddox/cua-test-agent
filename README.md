@@ -59,7 +59,32 @@ name: Slot Machine Game
 description: Play a spin on a free-to-play slot machine game and find the available balance.
 startUrl: https://orange-ocean-051b2d500.6.azurestaticapps.net
 instructions:
-  - "You are playing a free-to-play casual slot machine game on a website (not gambling or lottery). Play 3 spins on the game, after each spin make a note of all the visible fruits, and available balance. Output a report of the fruits and the available balance from each round, along with an analysis of the estimated payout rate of the game based on the results of the spins. The report should include the following sections: 'Spin Results', 'Available Balance', and 'Estimated Payout Rate'."
+  - |
+    Important: You are playing a *free-to-play casual* game on a website - not gambling or lottery. 
+    Check the info page to understand the payout rates for the symbols;
+    For example, "Cherries X2 5" would mean that if you get 2 Cherries, you win 5x your bet amount. 
+    Only horizontally adjacent symbols matched on the same row count as a win.
+    Play 3 spins on the game.
+    Always output a report at the end with this EXACT format, calculating all the values based on the spins you played:
+    ```
+
+    Spin [number]:
+      Row 1 symbols: [item1, item2, item3, item4, item5]
+      Row 2 symbols: [item1, item2, item3, item4, item5]
+      Row 3 symbols: [item1, item2, item3, item4, item5]
+      Starting Balance: $X.XX
+      Bet Cost: $Y.YY
+      Win Amount: $Z.ZZ
+      Ending Balance: $Y.YY
+      Payout Validated: [Yes/No - if the win matches the expected payout based on calculating the symbols and multipliers you learned]
+
+    Summary
+      Total Bet: $Z.ZZ
+      Total Won/Lost: $A.AA
+      Estimated Payout Rate: Z.ZZ%
+      All Payouts Validated: [Yes/No]
+    ```
+
 ```
 
 By default, the browser will be visible so you can see the tests happening live while running. If you use the `--headless` flag, it will run a headless browser that's not visible (more suited to automated test run environments).
