@@ -101,7 +101,7 @@ Each run creates a folder in `/outputs` like `cua-test-2025-05-25T12-48-37-137Z/
 - `*.webm` — Video recording of the session
 
 Here's an example screenshot and output log file from the sample slot machine instruction above:
-![image](images/sample-screenshot-output.png)
+![image](images/sample-screenshot-output.jpg)
 ![image](images/sample-console-output.png)
 
 ---
